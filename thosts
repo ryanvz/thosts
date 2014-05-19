@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+section_name = ARGV[0]
+fail 'Please provide a section name' unless section_name
+
+content = File.read('/etc/hosts').gsub(/^[ \t]*#\s*section\s*#{ section_name }\s*(?<old_status>OFF|ON)?.*?^\s*#end/m) do |section|
+  active = $~[:old_status] == 'OFF' ? true : false
+  puts "Section #{section_name} now #{active ? 'on' : 'off'}"
+  if active
+    section.gsub(/^(\s*)#+(\s*)(?=\d)/, '\1\2')
+  else
+    section.gsub(/^[ #\t]*(?=\d)/, '#')
+  end.sub(/^\s*#\s*section.*$/, "# section #{section_name} #{ active ? 'ON' : 'OFF' }")
+end
+
+File.write('/etc/hosts', content)
