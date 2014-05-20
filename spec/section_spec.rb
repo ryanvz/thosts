@@ -89,7 +89,7 @@ describe Section do
   end
 
   describe '#header' do
-    subject { section.header }
+    subject { section.header.chomp }
     it { should end_with status  }
     it { should start_with '#' }
     it { should include section.name }

@@ -8,7 +8,7 @@ class Section
   end
 
   def header
-    "# section #{name} #{enabled? ? 'ON' : 'OFF'}" if @name
+    "# section #{name} #{enabled? ? 'ON' : 'OFF'}\n" if @name
   end
 
   def enabled=(value)
@@ -20,13 +20,13 @@ class Section
   end
 
   def to_s
-    "#{header}\n#{data.join}"
+    "#{header}#{data.join}"
   end
 
   private
 
   def parse(data)
-    match = data.first.match(/^\s*#\s*section\s+(?<name>.*?\S)\s*(?<status>ON|OFF|)?\s*$|end/)
+    match = data.first.match(/^\s*#\s*section\s+(?<name>.*?\S)\s*(?<status>ON|OFF|)?\s*$/)
     if match
       @name, self.enabled = match.captures
       @data = data.drop(1)

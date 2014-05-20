@@ -1,0 +1,17 @@
+# A static comment
+
+1.1.1.1 foo.bar
+1.1.1.2 baz.quux
+#1.1.1.2 baz.quuux
+
+#section one ON
+1.1.1.4 puppies
+
+
+1.1.1.5 kitties
+#end
+
+# section one one OFF
+1.2.3.5 more
+1.2.3.6 cowbell
+# end
