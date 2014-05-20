@@ -16,4 +16,4 @@ RSpec.configure do |config|
   config.order = 'random'
 end
 
-require_relative '../hosts_file'
+require_relative '../lib/hosts_file'

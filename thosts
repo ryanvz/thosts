@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require_relative './hosts_file'
+require_relative 'lib/hosts_file'
 DEFAULT_PATH = '/etc/hosts'
 
 section_name = ARGV[0]
