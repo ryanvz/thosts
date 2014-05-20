@@ -1,10 +1,13 @@
 #!/usr/bin/env ruby
-require_relative 'lib/hosts_file'
+require_relative './lib/hosts_file'
+
 DEFAULT_PATH = '/etc/hosts'
 
 section_name = ARGV[0]
 fail 'Please provide a section name' unless section_name
 
 file = HostsFile.new
-file.toggle_section(section_name)
+file[section_name].toggle
+
+puts "Enabled sections:\n#{file.enabled_sections.join("\n")}"
 file.save

@@ -2,17 +2,22 @@ class Section
   attr_accessor :name, :enabled
   attr_reader :data
   alias_method :enabled?, :enabled
+  alias_method :section?, :name
 
   def initialize(data)
     parse(data)
   end
 
   def header
-    "# section #{name} #{enabled? ? 'ON' : 'OFF'}\n" if @name
+    "# section #{name} #{status}\n" if section?
   end
 
   def enabled=(value)
     @enabled = ![nil, false, 'OFF'].include?(value)
+  end
+
+  def status
+    enabled? ? 'ON' : 'OFF'
   end
 
   def toggle
@@ -21,6 +26,10 @@ class Section
 
   def to_s
     "#{header}#{data.join}"
+  end
+
+  def summary
+    "#{name} = #{status}" if section?
   end
 
   private

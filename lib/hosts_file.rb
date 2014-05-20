@@ -17,6 +17,22 @@ class HostsFile
     @sections.join.to_s
   end
 
+  def summary
+    @sections.map(&:summary).compact
+  end
+
+  def sections
+    @sections.select(&:section?)
+  end
+
+  def enabled_sections
+    sections.select(&:enabled?).map(&:name)
+  end
+
+  def disabled_sections
+    sections.reject(&:enabled?).map(&:name)
+  end
+
   def save
     File.write(@path, self)
   end
