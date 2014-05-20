@@ -34,7 +34,7 @@ class Section
   def data
     if section?
       @data.map do |row|
-        row.sub(/^\s*#\s*/, enabled? ? '' : '# ')
+        row.sub(/^\s*#?\s*/, enabled? ? '' : '# ')
       end
     else
       @data

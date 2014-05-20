@@ -34,7 +34,7 @@ class HostsFile
   end
 
   def save
-    File.write(@path, self)
+    File.write(@path, to_s)
   end
 
   def toggle(name)

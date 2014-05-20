@@ -4,14 +4,15 @@ require_relative './lib/hosts_file'
 
 DEFAULT_PATH = '/etc/hosts'
 
-action = :toggle # the default action if no options are specified
+action = nil
 OptionParser.new do |opts|
   opts.banner = 'Usage: thosts [options] [section_name]'
 
   opts.on('-l', '--list', 'list sections and their status') { action = :list }
+  opts.on('-v', 'print all enabled sections') { action = :print }
 end.parse!
 
-action = :list if ARGV.empty?
+action ||= (ARGV.empty? ? :list : :toggle)
 
 hosts = HostsFile.new
 
@@ -23,6 +24,8 @@ end
 case action
 when :list
   puts hosts.summary
+when :print
+  puts hosts.to_s
 when :toggle
   name = ARGV[0]
   hosts.toggle(name)
