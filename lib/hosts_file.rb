@@ -37,6 +37,16 @@ class HostsFile
     File.write(@path, self)
   end
 
+  def toggle(name)
+    target = self[name]
+    fail "could not find section '#{name}'" unless target
+    if name.include? '/'
+      siblings  = sections.select { |s| s.name.start_with?(name[/^.*\//]) } - [target]
+      siblings.each(&:disable)
+    end
+    target.toggle
+  end
+
   def [](section_name)
     @sections.find { |s| s.name == section_name }
   end

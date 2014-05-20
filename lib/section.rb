@@ -19,6 +19,14 @@ class Section
     enabled? ? 'ON' : 'OFF'
   end
 
+  def enable
+    self.enabled = true
+  end
+
+  def disable
+    self.enabled = false
+  end
+
   def toggle
     self.enabled = !enabled?
   end

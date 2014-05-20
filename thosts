@@ -1,13 +1,30 @@
 #!/usr/bin/env ruby
+require 'optparse'
 require_relative './lib/hosts_file'
 
 DEFAULT_PATH = '/etc/hosts'
 
-section_name = ARGV[0]
-fail 'Please provide a section name' unless section_name
+action = :toggle # the default action if no options are specified
+OptionParser.new do |opts|
+  opts.banner = 'Usage: thosts [options] [section_name]'
 
-file = HostsFile.new
-file[section_name].toggle
+  opts.on('-l', '--list', 'list sections and their status') { action = :list }
+end.parse!
 
-puts "Enabled sections:\n#{file.enabled_sections.join("\n")}"
-file.save
+action = :list if ARGV.empty?
+
+hosts = HostsFile.new
+
+def save(hosts)
+  puts "Enabled sections:\n#{hosts.enabled_sections.join("\n")}"
+  hosts.save
+end
+
+case action
+when :list
+  puts hosts.summary
+when :toggle
+  name = ARGV[0]
+  hosts.toggle(name)
+  save hosts
+end
