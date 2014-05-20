@@ -1,6 +1,5 @@
 class Section
   attr_accessor :name, :enabled
-  attr_reader :data
   alias_method :enabled?, :enabled
   alias_method :section?, :name
 
@@ -22,6 +21,16 @@ class Section
 
   def toggle
     self.enabled = !enabled?
+  end
+
+  def data
+    if section?
+      @data.map do |row|
+        row.sub(/^\s*#\s*/, enabled? ? '' : '# ')
+      end
+    else
+      @data
+    end
   end
 
   def to_s
