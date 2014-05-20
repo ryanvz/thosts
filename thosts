@@ -1,27 +1,37 @@
 #!/usr/bin/env ruby
 require 'optparse'
+require 'ostruct'
 require_relative './lib/hosts_file'
 
 DEFAULT_PATH = '/etc/hosts'
 
-action = nil
+options = OpenStruct.new
 OptionParser.new do |opts|
   opts.banner = 'Usage: thosts [options] [section_name]'
 
-  opts.on('-l', '--list', 'list sections and their status') { action = :list }
-  opts.on('-v', 'print all enabled sections') { action = :print }
+  opts.on('-l', '--list', 'list sections and their status') { options.action = :list }
+  opts.on('-v', 'print all enabled sections') { options.action = :print }
+
+  opts.on('-o', '--out FILE', 'write to specified FILE instead of input file') do |file|
+    options.out = file
+  end
+
+  opts.on('-i', '--in FILE', 'read from specified FILE instead of system hosts file') do |file|
+    options.in = file
+  end
 end.parse!
 
-action ||= (ARGV.empty? ? :list : :toggle)
+options.action ||= (ARGV.empty? ? :list : :toggle)
+options.in ||= DEFAULT_PATH
+options.out ||= options.in
+hosts = HostsFile.new(options.in)
 
-hosts = HostsFile.new
-
-def save(hosts)
+def save(hosts, file)
   puts "Enabled sections:\n#{hosts.enabled_sections.join("\n")}"
-  hosts.save
+  hosts.save file
 end
 
-case action
+case options.action
 when :list
   puts hosts.summary
 when :print
@@ -29,5 +39,5 @@ when :print
 when :toggle
   name = ARGV[0]
   hosts.toggle(name)
-  save hosts
+  save hosts, options.out
 end

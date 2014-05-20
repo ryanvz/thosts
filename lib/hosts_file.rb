@@ -33,8 +33,8 @@ class HostsFile
     sections.reject(&:enabled?).map(&:name)
   end
 
-  def save
-    File.write(@path, to_s)
+  def save(path = @path)
+    File.write(path, to_s)
   end
 
   def toggle(name)
