@@ -49,6 +49,10 @@ class Section
     "#{name} = #{status}" if section?
   end
 
+  def stripped
+    data.grep(/^\s*[\d]/)
+  end
+
   private
 
   def parse(data)

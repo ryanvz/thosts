@@ -10,7 +10,7 @@ OptionParser.new do |opts|
   opts.banner = 'Usage: thosts [options] [section_name]'
 
   opts.on('-l', '--list', 'list sections and their status') { options.action = :list }
-  opts.on('-v', 'print all enabled sections') { options.action = :print }
+  opts.on('-p', '--print', 'print all enabled lines (effective hosts file)') { options.action = :print }
 
   opts.on('-o', '--out FILE', 'write to specified FILE instead of input file') do |file|
     options.out = file
@@ -35,7 +35,7 @@ case options.action
 when :list
   puts hosts.summary
 when :print
-  puts hosts.to_s
+  puts hosts.effective_hosts
 when :toggle
   name = ARGV[0]
   hosts.toggle(name)

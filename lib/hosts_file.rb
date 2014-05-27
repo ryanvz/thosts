@@ -21,6 +21,10 @@ class HostsFile
     @sections.map(&:summary).compact
   end
 
+  def effective_hosts
+    @sections.select(&:enabled?).map(&:stripped)
+  end
+
   def sections
     @sections.select(&:section?)
   end
